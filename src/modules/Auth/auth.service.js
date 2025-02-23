@@ -142,12 +142,13 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
   const { email, otp, password } = req.body;
   const user = await User.findOne({ email, deleted: false });
   if (!user) return next(new Error("the user doesn't exist", { cause: 400 }));
-  const otpExist = await OTP.findOne({ email });
+  const otpExist = await OTP.findOne({ email, type: types.forgetPassword });
   if (!otpExist) return next(new Error("Invalid OTP", { cause: 400 }));
   if (!compareHash({ plainText: otp, hashValue: otpExist.otp }))
     return next(new Error("invalid otp"));
   user.password = password;
   user.changePasswordTime = Date.now();
+  user.otp.push({ code: otp, type: types.forgetPassword });
   await user.save();
   return res.json({ success: true, message: "try to login now" });
 });

@@ -17,11 +17,11 @@ export const profile = asyncHandler(async (req, res) => {
   //   user.phone,
   //   process.env.PRIVATE_KEY
   // ).toString(CryptoJS.enc.Utf8);
-  const phone = decrypt({ cipherText: user.mobileNumber });
+  const mobileNumber = decrypt({ cipherText: user.mobileNumber });
 
   return res.status(200).json({
     status: "success",
-    results: { ...user, phone },
+    results: { ...user, mobileNumber },
   });
 });
 export const findAllUsers = asyncHandler(async (req, res) => {
@@ -41,7 +41,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   let { userName, mobileNumber, gender } = req.body;
   // console.log(user);
   if (mobileNumber) {
-    mobileNumber = encrypt({ plainText: phone });
+    mobileNumber = encrypt({ plainText: mobileNumber });
   }
   const user = await User.findByIdAndUpdate(
     req.user._id,
@@ -96,12 +96,19 @@ export const freezeAccount = asyncHandler(async (req, res, next) => {
 });
 
 export const shareProfile = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.userId).select("userName gender");
+  const user = await User.findById(req.params.userId);
+  const mobileNumber = decrypt({ cipherText: user.mobileNumber });
+
   user
     ? res.status(200).json({
         success: true,
-        message: "account freeze successfully",
-        user,
+        message: "show profile successfully",
+        results: {
+          userName: `${user.firstName} ${user.lastName}`,
+          profilePic: user.profilePicture,
+          coverPic: user.coverPicture,
+          mobileNumber,
+        },
       })
     : next(new Error("Invalid account Id", { cause: 404 }));
 });

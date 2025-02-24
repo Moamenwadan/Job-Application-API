@@ -39,7 +39,9 @@ router.delete(
 );
 router.get(
   "/:userId",
-  validation(userSchemaValidation.shareProfile),
+  isAuthuenticated,
+  // isAuthorized(roles.user, roles.admin),
+  // validation(userSchemaValidation.shareProfile),
   userService.shareProfile
 );
 // upload picture in single

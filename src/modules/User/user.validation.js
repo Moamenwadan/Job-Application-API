@@ -3,9 +3,11 @@ import { genders } from "../../DB/models/user.model.js";
 import { isValidObjectId } from "../../middleware/validation.midddleware.js";
 export const updateProfile = joi
   .object({
-    userName: joi.string(),
+    firstName: joi.string(),
+    lastName: joi.string(),
     gender: joi.string().valid(...Object.values(genders)),
-    phone: joi.string(),
+    mobileNumber: joi.string(),
+    DOB: joi.string(),
   })
   .required();
 export const updatePassword = joi

@@ -154,10 +154,11 @@ export const uploadProfilePictureInCloudinary = asyncHandler(
     // save in cloudinary
     const { secure_url, public_id } = await cloudinary.uploader.upload(
       req.file.path,
-      { folder: `users/${user._id}/profilePicture/` }
+      { folder: `jobApplication/users/${user._id}/profilePicture/` }
     );
     user.profilePicture = { secure_url, public_id };
     await user.save();
+    console.log(user);
     return res.json({ success: true, user });
   }
 );
@@ -169,6 +170,35 @@ export const deletePictureInCloudinary = asyncHandler(
       user.profilePicture.public_id
     );
     user.profilePicture = {
+      secure_url: defaultSecure_url,
+      public_id: defaultpublic_id,
+    };
+    await user.save();
+    return res.json({ success: true, user });
+  }
+);
+export const uploadCoverPictureInCloudinary = asyncHandler(
+  async (req, res, next) => {
+    const user = await User.findById(req.user._id);
+    // save in cloudinary
+    const { secure_url, public_id } = await cloudinary.uploader.upload(
+      req.file.path,
+      { folder: `jobApplication/users/${user._id}/coverPicture/` }
+    );
+    user.coverPicture = { secure_url, public_id };
+    await user.save();
+    console.log(user);
+    return res.json({ success: true, user });
+  }
+);
+export const deleteCoverPictureInCloudinary = asyncHandler(
+  async (req, res, next) => {
+    const user = await User.findById(req.user._id);
+    // save in cloudinary
+    const results = await cloudinary.uploader.destroy(
+      user.coverPicture.public_id
+    );
+    user.coverPicture = {
       secure_url: defaultSecure_url,
       public_id: defaultpublic_id,
     };

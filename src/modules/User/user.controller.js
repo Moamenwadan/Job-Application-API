@@ -40,8 +40,8 @@ router.delete(
 router.get(
   "/:userId",
   isAuthuenticated,
-  // isAuthorized(roles.user, roles.admin),
-  // validation(userSchemaValidation.shareProfile),
+  isAuthorized(roles.user, roles.admin),
+  validation(userSchemaValidation.shareProfile),
   userService.shareProfile
 );
 // upload picture in single
@@ -78,12 +78,23 @@ router.delete(
 router.post(
   "/uploadProfilePictureInCloudinary",
   isAuthuenticated,
-  uploadCloud().single("image"),
+  uploadCloud(fileValidation.images).single("image"),
   userService.uploadProfilePictureInCloudinary
+);
+router.post(
+  "/uploadCoverPictureInCloudinary",
+  isAuthuenticated,
+  uploadCloud(fileValidation.images).single("image"),
+  userService.uploadCoverPictureInCloudinary
 );
 router.delete(
   "/deletePictureInCloudinary",
   isAuthuenticated,
   userService.deletePictureInCloudinary
+);
+router.delete(
+  "/deleteCoverPictureInCloudinary",
+  isAuthuenticated,
+  userService.deleteCoverPictureInCloudinary
 );
 export default router;

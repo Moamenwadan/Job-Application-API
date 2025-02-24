@@ -151,15 +151,21 @@ export const deleteProfilePicture = asyncHandler(async (req, res, next) => {
 export const uploadProfilePictureInCloudinary = asyncHandler(
   async (req, res, next) => {
     const user = await User.findById(req.user._id);
+    if (!user) return next(new Error("the user doesn't exist"));
+    if (!req.file) {
+      return next(new Error("No file uploaded", { cause: 400 }));
+    }
     // save in cloudinary
     const { secure_url, public_id } = await cloudinary.uploader.upload(
       req.file.path,
       { folder: `jobApplication/users/${user._id}/profilePicture/` }
     );
+    console.log({ secure_url, public_id });
     user.profilePicture = { secure_url, public_id };
     await user.save();
+    console.log(user.profilePicture);
     console.log(user);
-    return res.json({ success: true, user });
+    return res.status(200).json({ success: true, user });
   }
 );
 export const deletePictureInCloudinary = asyncHandler(

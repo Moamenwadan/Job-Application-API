@@ -45,38 +45,38 @@ router.get(
   userService.shareProfile
 );
 // upload picture in single
-router.post(
-  "/profilePicture",
-  isAuthuenticated,
-  upload(fileValidation.images, "uploads/users").single("image"),
-  userService.profilePicture
-);
+// router.post(
+//   "/profilePicture",
+//   isAuthuenticated,
+//   upload(fileValidation.images, "uploads/users").single("image"),
+//   userService.profilePicture
+// );
 // upload multiple picture in array
-router.post(
-  "/uploadPictures",
-  isAuthuenticated,
-  upload().array("images", 3),
-  userService.uploadPictures
-);
-router.post(
-  "/uploadPicturesInFields",
-  isAuthuenticated,
-  upload().fields([
-    { name: "images", maxCount: 3 },
-    { name: "tours", maxCount: 5 },
-  ]),
-  userService.uploadPicturesInFields
-);
+// router.post(
+//   "/uploadPictures",
+//   isAuthuenticated,
+//   upload().array("images", 3),
+//   userService.uploadPictures
+// );
+// router.post(
+//   "/uploadPicturesInFields",
+//   isAuthuenticated,
+//   upload().fields([
+//     { name: "images", maxCount: 3 },
+//     { name: "tours", maxCount: 5 },
+//   ]),
+//   userService.uploadPicturesInFields
+// );
 // delete picture
-router.delete(
-  "/deletePicture",
-  isAuthuenticated,
-  upload(fileValidation.images, "uploads/users").single("image"),
-  userService.deleteProfilePicture
-);
+// router.delete(
+//   "/deletePicture",
+//   isAuthuenticated,
+//   upload(fileValidation.images, "uploads/users").single("image"),
+//   userService.deleteProfilePicture
+// );
 // upload picture in cloudinary
 router.post(
-  "/uploadProfilePictureInCloudinary",
+  "/profilePicture",
   isAuthuenticated,
   uploadCloud(fileValidation.images).single("image"),
   userService.uploadProfilePictureInCloudinary

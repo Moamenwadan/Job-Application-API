@@ -2,6 +2,7 @@
 import connectDB from "./DB/connection.js";
 import userController from "./modules/User/user.controller.js";
 import adminController from "./modules/admin/admin.controller.js";
+import companyController from "./modules/Company/company.controller.js";
 import authController from "./modules/Auth/auth.controller.js";
 import globalErrorHandler from "./utils/errorHandling/globalErrorHandler.js";
 import notFoundHandler from "./utils/errorHandling/notFoundHandler.js";
@@ -60,6 +61,7 @@ const boot = async (app, express) => {
   app.use("/auth", authController);
   app.use("/users", userController);
   app.use("/admin", adminController);
+  app.use("/company", companyController);
 
   app.all("*", notFoundHandler);
   app.use(globalErrorHandler);

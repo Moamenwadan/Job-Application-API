@@ -93,13 +93,13 @@ const userSchema = new Schema(
 userSchema.virtual("userName").get(function () {
   return `${this.firstName.toLowerCase()} ${this.lastName.toLowerCase()}`;
 });
-userSchema.pre("save", function (next) {
-  if (this.isModified("password")) {
-    this.mobileNumber = encrypt({ plainText: this.mobileNumber });
-    this.password = hash({ plainText: this.password });
-    return next();
-  }
-});
+// userSchema.pre("save", function (next) {
+//   if (this.isModified("password")) {
+//     this.mobileNumber = encrypt({ plainText: this.mobileNumber });
+//     this.password = hash({ plainText: this.password });
+//     return next();
+//   }
+// });
 const User = model("User", userSchema);
 
 export default User;

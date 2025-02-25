@@ -34,6 +34,7 @@ const companySchema = new Schema(
     },
     approvedByAdmin: {
       type: Boolean,
+      default: true,
     },
     bannedAt: { type: Date },
     deletedAt: { type: Date },
@@ -43,7 +44,11 @@ const companySchema = new Schema(
 
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
-
+companySchema.virtual("jobs", {
+  ref: "Job",
+  localField: "_id",
+  foreignField: "companyId",
+});
 const Company = model("Company", companySchema);
 
 export default Company;

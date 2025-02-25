@@ -37,7 +37,7 @@ const jobSchema = new Schema(
     addedBy: { type: Types.ObjectId, ref: "User" },
     updatedBy: { type: Types.ObjectId, ref: "User" },
     closed: { type: Boolean },
-    companyId: { type: Types.ObjectId, ref: "Company" },
+    companyId: [{ type: Types.ObjectId, ref: "Company" }],
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

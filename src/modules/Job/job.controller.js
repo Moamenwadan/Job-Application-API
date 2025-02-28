@@ -8,7 +8,7 @@ import * as jobSchemaValidation from "./job.validation.js";
 import { upload } from "../../utils/fileUploading/multerUploading.js";
 import { fileValidation } from "../../utils/fileUploading/multerUploading.js";
 import uploadCloud from "../../utils/fileUploading/multerCloud.js";
-const router = Router();
+const router = Router({ mergeParams: true });
 // add job
 router.post(
   "/addJob/:companyId",
@@ -23,7 +23,6 @@ router.patch(
   isAuthuenticated,
   isAuthorized(roles.admin, roles.user),
   validation(jobSchemaValidation.updateJob),
-
   jobService.updateJob
 );
 // delete job
@@ -32,8 +31,23 @@ router.delete(
   isAuthuenticated,
   isAuthorized(roles.admin, roles.user),
   validation(jobSchemaValidation.deleteJob),
-
   jobService.deleteJob
+);
+// get jobs
+router.get(
+  "/findJobs",
+  isAuthuenticated,
+  isAuthorized(roles.admin, roles.user),
+  validation(jobSchemaValidation.getJob),
+  jobService.getJob
+);
+// filter job
+router.get(
+  "/filterJobs",
+  isAuthuenticated,
+  isAuthorized(roles.admin, roles.user),
+  validation(jobSchemaValidation.filterJob),
+  jobService.filterJobs
 );
 
 export default router;

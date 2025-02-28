@@ -63,6 +63,7 @@ const boot = async (app, express) => {
   app.use("/users", userController);
   app.use("/admin", adminController);
   app.use("/company", companyController);
+  app.use("/:companyId/job", jobController);
   app.use("/job", jobController);
 
   app.all("*", notFoundHandler);

@@ -17,7 +17,7 @@ export const workingTimes = {
   partTime: "part-time",
   fullTime: "full-time",
 };
-export const seniorityLevel = {
+export const seniorityLevels = {
   fresh: "fresh",
   junior: "Junior",
   senior: "Senior",
@@ -30,7 +30,7 @@ const jobSchema = new Schema(
     jobTitle: { type: String },
     jobLocation: { type: String, enum: Object.values(jobLocations) },
     workingTime: { type: String, enum: Object.values(workingTimes) },
-    seniorityLevel: { type: String, enum: Object.values(seniorityLevel) },
+    seniorityLevel: { type: String, enum: Object.values(seniorityLevels) },
     jobDescription: { type: String },
     technicalSkills: [String],
     softSkills: [String],
@@ -42,6 +42,20 @@ const jobSchema = new Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+jobSchema.query.paginate = async function (page) {
+  // let page = req.query;
+  let limit = 2;
+  let skip = (page - 1) * limit;
+  const data = await this.skip(skip).limit(limit).sort({ createdAt: 1 });
+  const numberOfJobs = await this.model.countDocuments();
+
+  return {
+    data,
+    currentPage: Number(page),
+    numberOfJobs,
+    totalPages: Math.ceil(numberOfJobs / limit),
+  };
+};
 const Job = model("Job", jobSchema);
 
 export default Job;

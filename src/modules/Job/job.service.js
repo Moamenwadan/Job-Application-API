@@ -128,3 +128,39 @@ export const deleteJob = asyncHandler(async (req, res, next) => {
     .status(201)
     .json({ success: true, message: "job deleted successfully" });
 });
+export const getJob = asyncHandler(async (req, res, next) => {
+  const { companyId } = req.params;
+  const { page } = req.query;
+
+  const company = await Company.findById(companyId);
+  if (!company)
+    return next(new Error("the company doesn't exist", { cause: 404 }));
+  const jobs = await Job.find({ companyId: { $in: [companyId] } }).paginate(
+    page
+  );
+  if (!jobs)
+    return next(new Error("the company doesn't have jobs", { cause: 404 }));
+
+  return res.status(200).json({
+    success: true,
+    message: "find jobs successfully successfully",
+    jobs,
+  });
+});
+export const filterJobs = asyncHandler(async (req, res, next) => {
+  const { page } = req.query;
+  const { workingTime, jobLocation, jobTitle, seniorityLevel } = req.body;
+
+  const jobs = await Job.find({
+    workingTime,
+    jobLocation,
+    jobTitle,
+    seniorityLevel: seniorityLevel,
+  }).paginate(page);
+  if (!jobs)
+    return next(new Error("the company doesn't have jobs", { cause: 404 }));
+
+  return res
+    .status(200)
+    .json({ success: true, message: "filter successfully", jobs });
+});

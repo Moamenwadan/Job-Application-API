@@ -1,30 +1,21 @@
-// import joi from "joi";
+function canJump(nums) {
+  let maxReach = 0; // Farthest index we can reach
+  const lastIndex = nums.length - 1;
 
-// const person = {
-//   name: "Ahmed",
-//   age: 20,
-//   email: "moamen@gmail.com",
-//   isMarried: false,
-//   password: "123456",
-//   confirmPassword: "123456",
-//   //   skills: ["HTML", "CSS"],
-//   skills: [{ frontend: ["HTML", "CSS"] }],
-// };
+  for (let i = 0; i < nums.length; i++) {
+    // If the current index is beyond the farthest we can reach, return false
+    if (i > maxReach) {
+      return false;
+    }
 
-// const schema = joi.object({
-//   name: joi.string().min(3).max(20).required(),
-//   age: joi.number().min(18).max(80),
-//   email: joi.string().email().required(),
-//   isMarried: joi.boolean(),
-//   password: joi.string().required(),
-//   confirmPassword: joi.string().valid(joi.ref("password")).required(),
-//   //   skills: joi.array().items(joi.string().required()),
-//   skills: joi.array().items(
-//     joi.object({
-//       frontend: joi.array().items(joi.string().required()).required(),
-//     })
-//   ),
-// });
+    // Update the farthest index we can reach
+    maxReach = Math.max(maxReach, i + nums[i]);
 
-// const result = schema.validate(person, { abortEarly: false });
-// console.log(result);
+    // If we can reach or surpass the last index, return true
+    if (maxReach >= lastIndex) {
+      return true;
+    }
+  }
+
+  return false;
+}

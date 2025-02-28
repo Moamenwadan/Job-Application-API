@@ -6,6 +6,7 @@ import companyController from "./modules/Company/company.controller.js";
 import authController from "./modules/Auth/auth.controller.js";
 import globalErrorHandler from "./utils/errorHandling/globalErrorHandler.js";
 import notFoundHandler from "./utils/errorHandling/notFoundHandler.js";
+import jobController from "./modules/Job/job.controller.js";
 import helmet from "helmet";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
@@ -62,6 +63,7 @@ const boot = async (app, express) => {
   app.use("/users", userController);
   app.use("/admin", adminController);
   app.use("/company", companyController);
+  app.use("/job", jobController);
 
   app.all("*", notFoundHandler);
   app.use(globalErrorHandler);

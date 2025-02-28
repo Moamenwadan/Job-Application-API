@@ -17,7 +17,7 @@ export const addCompany = asyncHandler(async (req, res, next) => {
     approvedByAdmin,
     HRs,
   } = req.body;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.create({
     companyName,
@@ -44,7 +44,7 @@ export const updateCompanyData = asyncHandler(async (req, res, next) => {
     HRs,
   } = req.body;
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   let company = await Company.findOne({
     _id: companyId,
@@ -75,7 +75,7 @@ export const updateCompanyData = asyncHandler(async (req, res, next) => {
 });
 export const softDeleteCompany = asyncHandler(async (req, res, next) => {
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findOne({
     _id: companyId,
@@ -93,7 +93,7 @@ export const softDeleteCompany = asyncHandler(async (req, res, next) => {
 });
 export const getSpecificCompany = asyncHandler(async (req, res, next) => {
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findOne({
     _id: companyId,
@@ -104,7 +104,7 @@ export const getSpecificCompany = asyncHandler(async (req, res, next) => {
 });
 export const getSpecificCompanyByName = asyncHandler(async (req, res, next) => {
   const { companyName } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findOne({
     companyName,
@@ -120,7 +120,7 @@ export const getSpecificCompanyByName = asyncHandler(async (req, res, next) => {
 });
 export const uploadLogo = asyncHandler(async (req, res, next) => {
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findOne({
     _id: companyId,
@@ -139,7 +139,7 @@ export const uploadLogo = asyncHandler(async (req, res, next) => {
 });
 export const coverPic = asyncHandler(async (req, res, next) => {
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findOne({
     _id: companyId,
@@ -158,7 +158,7 @@ export const coverPic = asyncHandler(async (req, res, next) => {
 });
 export const deleteLogo = asyncHandler(async (req, res, next) => {
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findOne({
     _id: companyId,
@@ -177,7 +177,7 @@ export const deleteLogo = asyncHandler(async (req, res, next) => {
 });
 export const deleteCover = asyncHandler(async (req, res, next) => {
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findOne({
     _id: companyId,

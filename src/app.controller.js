@@ -10,6 +10,16 @@ import jobController from "./modules/Job/job.controller.js";
 import helmet from "helmet";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
+import { createHandler } from "graphql-http/lib/use/express";
+import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import { retreiveAllusers } from "./modules/User/query.resolver.js";
+import { retreiveAllCompanies } from "./modules/Company/query.resolver.js";
+import {
+  approveCompany,
+  banSpecificCompany,
+} from "./modules/Company/mutation.resolver.js";
+import { banSpecificuser } from "./modules/User/mutation.resolver.js";
+
 const boot = async (app, express) => {
   app.use(cors());
   await connectDB();
@@ -48,6 +58,23 @@ const boot = async (app, express) => {
       return res.statusCode < 400;
     },
   });
+  const schema = new GraphQLSchema({
+    query: new GraphQLObjectType({
+      name: "Query",
+      fields: {
+        users: retreiveAllusers,
+        companies: retreiveAllCompanies,
+      },
+    }),
+    mutation: new GraphQLObjectType({
+      name: "Mutation",
+      fields: {
+        bandedAndUnbaned: banSpecificCompany,
+        banandUnbanedSpecificuser: banSpecificuser,
+        approveCompany: approveCompany,
+      },
+    }),
+  });
 
   app.use(limiter);
   app.use(helmet());
@@ -65,6 +92,7 @@ const boot = async (app, express) => {
   app.use("/company", companyController);
   app.use("/:companyId/job", jobController);
   app.use("/job", jobController);
+  app.use("/graphql", createHandler({ schema }));
 
   app.all("*", notFoundHandler);
   app.use(globalErrorHandler);

@@ -34,7 +34,6 @@ const companySchema = new Schema(
     },
     approvedByAdmin: {
       type: Boolean,
-      default: true,
     },
     bannedAt: { type: Date },
     deletedAt: { type: Date },

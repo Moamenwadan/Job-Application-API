@@ -20,7 +20,7 @@ export const addJob = asyncHandler(async (req, res, next) => {
     softSkills,
   } = req.body;
   const { companyId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) return next(new Error("the user doesn't exist", { cause: 404 }));
   const company = await Company.findById(companyId);
   //   console.log(company);
@@ -71,7 +71,7 @@ export const updateJob = asyncHandler(async (req, res, next) => {
     softSkills,
   } = req.body;
   const { jobId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) return next(new Error("the user doesn't exist", { cause: 404 }));
   let job = await Job.findOne({ _id: jobId });
   if (!job)
@@ -108,7 +108,7 @@ export const deleteJob = asyncHandler(async (req, res, next) => {
   const company = await Company.findById(companyId);
   if (!company)
     return next(new Error("the company doesn't exist", { cause: 404 }));
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) return next(new Error("the user doesn't exist", { cause: 404 }));
   let job = await Job.findOne({ _id: jobId });
   if (!job)
@@ -173,7 +173,7 @@ export const filterJobs = asyncHandler(async (req, res, next) => {
 });
 export const addApplication = asyncHandler(async (req, res, next) => {
   const { jobId } = req.params;
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ _id: req.user._id, deleted: false });
   if (!user) return next(new Error("the user doesn't exist", { cause: 404 }));
   const job = await Job.findById(jobId);
   if (!job) return next(new Error("the company doesn't exist", { cause: 404 }));

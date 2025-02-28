@@ -50,4 +50,20 @@ router.get(
   jobService.filterJobs
 );
 
+router.post(
+  "/addApplication/:jobId",
+  isAuthuenticated,
+  isAuthorized(roles.user),
+  uploadCloud(fileValidation.files).single("pdf"),
+  validation(jobSchemaValidation.addApplication),
+  jobService.addApplication
+);
+// get all application for specific job
+router.patch(
+  "/handleAcceptedAndRejeted/:applicationId",
+  isAuthuenticated,
+  //   isAuthorized(roles.admin),
+  //   validation(jobSchemaValidation.addApplication),
+  jobService.handleAcceptAndRefuse
+);
 export default router;

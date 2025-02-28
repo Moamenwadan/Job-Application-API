@@ -85,3 +85,18 @@ export const filterJob = joi
     page: joi.number().required(),
   })
   .required();
+export const addApplication = joi
+  .object({
+    jobId: joi.custom(isValidObjectId).required(),
+    file: joi.object({
+      fieldname: joi.string().valid("pdf").required(),
+      originalname: joi.string().required(),
+      encoding: joi.string().required(),
+      mimetype: joi.string().required(),
+      size: joi.number().required(),
+      destination: joi.string().required(),
+      filename: joi.string().required(),
+      path: joi.string().required(),
+    }),
+  })
+  .required();

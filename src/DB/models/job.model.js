@@ -56,6 +56,11 @@ jobSchema.query.paginate = async function (page) {
     totalPages: Math.ceil(numberOfJobs / limit),
   };
 };
+jobSchema.virtual("applications", {
+  ref: "Application",
+  localField: "_id",
+  foreignField: "jobId",
+});
 const Job = model("Job", jobSchema);
 
 export default Job;
